@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+  <name>ear-security-reproducer</name>
+  <comment>BookingAgency: EJB and WAR in an EAR - EAR. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
+  <projects>
+    <project>ws-security-reproducer</project>
+    <project>ejb-security-reproducer</project>
+  </projects>
+  <buildSpec/>
+  <natures/>
+</projectDescription>

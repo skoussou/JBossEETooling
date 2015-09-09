@@ -1,0 +1,1783 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="3c7f441e-4b2c-4ef0-97b9-c99e2634ad65" activeEnvironment="Default" name="BarceloWebservices" resourceRoot="" soapui-version="5.2.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="d0b26d69-248d-44f3-86b8-37add576584e" wsaVersion="NONE" name="LeoUtilsWSSoapBinding" type="wsdl" bindingName="{http://ws.leo.barcelo.com/}LeoUtilsWSSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/webservices/LeoUtilsWS?Wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/webservices/LeoUtilsWS?Wsdl"><con:part><con:url>http://localhost:8080/webservices/LeoUtilsWS?Wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="LeoUtilsWS" targetNamespace="http://ws.leo.barcelo.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.leo.barcelo.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.leo.barcelo.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+      <xs:import namespace="http://www.w3.org/2005/05/xmlmime"/>
+      <xs:element name="createReceivable" type="tns:createReceivable"/>
+      <xs:element name="createReceivableResponse" type="tns:createReceivableResponse"/>
+      <xs:element name="error" type="tns:WSError"/>
+      <xs:element name="getAgencyReport" type="tns:getAgencyReport"/>
+      <xs:element name="getAgencyReportResponse" type="tns:getAgencyReportResponse"/>
+      <xs:element name="getBookingVoucher" type="tns:getBookingVoucher"/>
+      <xs:element name="getBookingVoucherResponse" type="tns:getBookingVoucherResponse"/>
+      <xs:element name="getLocationTree" type="tns:getLocationTree"/>
+      <xs:element name="getLocationTreeResponse" type="tns:getLocationTreeResponse"/>
+      <xs:element name="getThirdCommissions" type="tns:getThirdCommissions"/>
+      <xs:element name="getThirdCommissionsResponse" type="tns:getThirdCommissionsResponse"/>
+      <xs:element name="getThirdTaxes" type="tns:getThirdTaxes"/>
+      <xs:element name="getThirdTaxesResponse" type="tns:getThirdTaxesResponse"/>
+      <xs:element name="getZoneTree" type="tns:getZoneTree"/>
+      <xs:element name="getZoneTreeResponse" type="tns:getZoneTreeResponse"/>
+      <xs:element name="reconfirmBooking" type="tns:reconfirmBooking"/>
+      <xs:element name="reconfirmBookingResponse" type="tns:reconfirmBookingResponse"/>
+      <xs:element name="validateAgencyReference" type="tns:validateAgencyReference"/>
+      <xs:element name="validateAgencyReferenceResponse" type="tns:validateAgencyReferenceResponse"/>
+      <xs:complexType name="getBookingVoucher">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="authenticationData" type="tns:packageAuthenticationData"/>
+          <xs:element minOccurs="0" name="bookingReference" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="packageAuthenticationData">
+        <xs:complexContent>
+          <xs:extension base="tns:channelAuthenticationData">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="third" type="xs:string"/>
+              <xs:element minOccurs="0" name="session" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="channelAuthenticationData">
+        <xs:complexContent>
+          <xs:extension base="tns:authenticationData">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="channel" type="xs:string"/>
+              <xs:element name="subChannel" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="authenticationData">
+        <xs:sequence>
+          <xs:element name="user" type="xs:string"/>
+          <xs:element name="password" type="xs:string"/>
+          <xs:element minOccurs="0" name="locale" type="xs:string"/>
+          <xs:element name="domain" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getBookingVoucherResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:base64Binary" xmime:expectedContentTypes="application/pdf"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="WSError">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="type" type="xs:string"/>
+          <xs:element minOccurs="0" name="code" type="xs:string"/>
+          <xs:element minOccurs="0" name="shortText" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="createReceivable">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="authenticationData" type="tns:authenticationData"/>
+          <xs:element minOccurs="0" name="receivable" type="tns:receivableWS"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="receivableWS">
+        <xs:sequence>
+          <xs:element name="bookingReference" type="xs:string"/>
+          <xs:element minOccurs="0" name="bookingLineId" type="xs:string"/>
+          <xs:element name="cashMovementType" type="tns:cashMovementType"/>
+          <xs:element minOccurs="0" name="providerShortName" type="xs:string"/>
+          <xs:element name="receivableConceptCode" type="xs:string"/>
+          <xs:element name="expirationDate" type="xs:dateTime"/>
+          <xs:element name="amount" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="currency" type="xs:string"/>
+          <xs:element minOccurs="0" name="changeApplied" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="deadLine" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="externalReference" type="xs:string"/>
+          <xs:element minOccurs="0" name="remark" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="createReceivableResponse">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="getThirdCommissions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="authenticationData" type="tns:authenticationData"/>
+          <xs:element minOccurs="0" name="branchCode" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getThirdCommissionsResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="commissionsResponse" type="tns:CommissionsResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CommissionsResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="tariffMaps" type="tns:TariffMapsList"/>
+          <xs:element minOccurs="0" name="branchTariffs" type="tns:BranchTariffs"/>
+          <xs:element minOccurs="0" name="thirdCommissions" type="tns:ThirdCommissions"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TariffMapsList">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="integrationTariffMap" type="tns:IntegrationTariffMap"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="IntegrationTariffMap">
+        <xs:sequence>
+          <xs:element name="dictionary" type="xs:string"/>
+          <xs:element name="integrationTariff" type="xs:string"/>
+          <xs:element name="mappedTariffs" type="tns:MappedTariffs"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="MappedTariffs">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="tariffCode" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="BranchTariffs">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="branchTariff" type="tns:BranchTariff"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="BranchTariff">
+        <xs:sequence>
+          <xs:element name="branchCode" type="xs:string"/>
+          <xs:element name="tariffs" type="tns:Tariffs"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Tariffs">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="tariffCode" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ThirdCommissions">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="thirdCommission" type="tns:ThirdCommission"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ThirdCommission">
+        <xs:sequence>
+          <xs:element name="thirdCode" type="xs:string"/>
+          <xs:element name="tariffCode" type="xs:string"/>
+          <xs:element name="tariffPriorityForThird" type="xs:int"/>
+          <xs:element name="startDate" type="xs:dateTime"/>
+          <xs:element name="endDate" type="xs:dateTime"/>
+          <xs:element name="commissionPercentage" type="xs:double"/>
+          <xs:element name="commissionType" type="xs:string"/>
+          <xs:element name="applicationOnSalePrice" type="xs:string"/>
+          <xs:element minOccurs="0" name="sellChannels" type="tns:SellChannels"/>
+          <xs:element minOccurs="0" name="commissionGroups" type="tns:CommissionGroups"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="SellChannels">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="code" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CommissionGroups">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getAgencyReport">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="authenticationData" type="tns:packageAuthenticationData"/>
+          <xs:element minOccurs="0" name="bookingReference" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getAgencyReportResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:base64Binary" xmime:expectedContentTypes="application/pdf"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getLocationTree">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="authenticationData" type="tns:authenticationData"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getLocationTreeResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="destinationList" type="tns:destination"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="destination">
+        <xs:complexContent>
+          <xs:extension base="tns:itemWS">
+            <xs:sequence>
+              <xs:element name="searchAllowed" type="xs:boolean"/>
+              <xs:element minOccurs="0" name="type" type="tns:destinationType"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="childDestinations" nillable="true" type="tns:destination"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="zoneProducts" nillable="true" type="tns:zoneProduct"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="itemWS">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:string"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="zoneProduct">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="componentConfigurationList" nillable="true" type="tns:componentConfiguration"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="validConnectionList" nillable="true" type="tns:validConnection"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="referencePriceList" nillable="true" type="tns:referencePrice"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="componentConfiguration">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="componentParameterList" nillable="true" type="tns:componentParameter"/>
+        </xs:sequence>
+        <xs:attribute name="componentCode" type="xs:string"/>
+        <xs:attribute name="componentName" type="xs:string"/>
+      </xs:complexType>
+      <xs:complexType name="componentParameter">
+        <xs:sequence/>
+        <xs:attribute name="code" type="xs:string"/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="minValue" type="xs:string"/>
+        <xs:attribute name="maxValue" type="xs:string"/>
+      </xs:complexType>
+      <xs:complexType name="validConnection">
+        <xs:sequence/>
+        <xs:attribute name="iataOrigin" type="xs:string"/>
+        <xs:attribute name="iataOriginName" type="xs:string"/>
+      </xs:complexType>
+      <xs:complexType name="referencePrice">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="departureLocation" type="xs:string"/>
+          <xs:element minOccurs="0" name="initialDate" type="xs:dateTime"/>
+          <xs:element name="duration" type="xs:int"/>
+          <xs:element minOccurs="0" name="price" type="xs:decimal"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="validateAgencyReference">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="authenticationData" type="tns:packageAuthenticationData"/>
+          <xs:element minOccurs="0" name="agencyReference" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="validateAgencyReferenceResponse">
+        <xs:sequence>
+          <xs:element name="return" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="reconfirmBooking">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="authenticationData" type="tns:authenticationData"/>
+          <xs:element minOccurs="0" name="bookingReference" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="reconfirmBookingResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="booking" type="tns:bookingWS"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="bookingWS">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element name="bookingReference" type="xs:int"/>
+              <xs:element minOccurs="0" name="state" type="tns:bookingState"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="bookingLines" nillable="true" type="tns:bookingLineWS"/>
+              <xs:element minOccurs="0" name="agency" type="tns:item"/>
+              <xs:element minOccurs="0" name="bookingDate" type="xs:dateTime"/>
+              <xs:element minOccurs="0" name="lastModifiedDate" type="xs:dateTime"/>
+              <xs:element name="outOfAllotment" type="xs:boolean"/>
+              <xs:element minOccurs="0" name="userAgent" type="xs:string"/>
+              <xs:element minOccurs="0" name="user" type="xs:string"/>
+              <xs:element minOccurs="0" name="branch" type="tns:item"/>
+              <xs:element minOccurs="0" name="agencyReferency" type="xs:string"/>
+              <xs:element minOccurs="0" name="totalSalePrice" type="xs:decimal"/>
+              <xs:element minOccurs="0" name="holder" type="tns:pax"/>
+              <xs:element name="tags">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="key" type="xs:string"/>
+                          <xs:element minOccurs="0" name="value" type="xs:anyType"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="sellChannel" type="tns:channel"/>
+              <xs:element minOccurs="0" name="invoiceDetail" type="tns:invoiceDetailWS"/>
+              <xs:element minOccurs="0" name="paymentMode" type="tns:paymentMode"/>
+              <xs:element minOccurs="0" name="receiptPendingAmount" type="xs:decimal"/>
+              <xs:element name="showBond" type="xs:boolean"/>
+              <xs:element minOccurs="0" name="serie" type="xs:string"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="requiredAdultIdType" nillable="true" type="tns:passengerIdType"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="requiredChildIdType" nillable="true" type="tns:passengerIdType"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="requiredBabyIdType" nillable="true" type="tns:passengerIdType"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="requiredAdultInfo" nillable="true" type="tns:requiredPassengerInfo"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="requiredChildInfo" nillable="true" type="tns:requiredPassengerInfo"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="requiredBabyInfo" nillable="true" type="tns:requiredPassengerInfo"/>
+              <xs:element minOccurs="0" name="price" type="tns:wsPrice"/>
+              <xs:element minOccurs="0" name="airportTaxes" type="tns:wsPrice"/>
+              <xs:element minOccurs="0" name="totalPrice" type="tns:wsPrice"/>
+              <xs:element minOccurs="0" name="priceDetails" type="tns:transportOptionPriceDetail"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="item">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:string"/>
+          <xs:element minOccurs="0" name="shortName" type="xs:string"/>
+          <xs:element minOccurs="0" name="longName" type="xs:string"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element minOccurs="0" name="locale" type="xs:string"/>
+          <xs:element minOccurs="0" name="deadline" type="xs:dateTime"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="bookingLineWS">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="adults" type="xs:int"/>
+          <xs:element minOccurs="0" name="arrivalDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="babies" type="xs:int"/>
+          <xs:element minOccurs="0" name="buyPriceSheet" type="xs:string"/>
+          <xs:element minOccurs="0" name="buyTaxPrice" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="cancelQuote" type="xs:decimal"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="cancelQuotes" nillable="true" type="tns:cancelQuote"/>
+          <xs:element minOccurs="0" name="channel" type="xs:string"/>
+          <xs:element minOccurs="0" name="code" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="combinationRules" nillable="true" type="tns:combinationRule"/>
+          <xs:element minOccurs="0" name="componentId" type="xs:string"/>
+          <xs:element minOccurs="0" name="contractCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="departureDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="flightCompany" type="tns:item"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="itineraryList" nillable="true" type="tns:itineraryWS"/>
+          <xs:element minOccurs="0" name="kids" type="xs:int"/>
+          <xs:element minOccurs="0" name="modality" type="xs:anyType"/>
+          <xs:element minOccurs="0" name="parentBookingLineCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="parentProduct" type="tns:productWS"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="passengers" nillable="true" type="tns:pax"/>
+          <xs:element minOccurs="0" name="product" type="tns:productWS"/>
+          <xs:element minOccurs="0" name="productUsage" type="tns:productUsageWS"/>
+          <xs:element minOccurs="0" name="productVariety" type="tns:CompleteProductVariety"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="remarks" nillable="true" type="tns:remark"/>
+          <xs:element name="renderInfo">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element minOccurs="0" name="key" type="xs:string"/>
+                      <xs:element minOccurs="0" name="value" type="xs:anyType"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="selectionType" type="tns:packageComponentSelectionType"/>
+          <xs:element minOccurs="0" name="sellContract" type="xs:string"/>
+          <xs:element minOccurs="0" name="sellPrice" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="sellPriceSheet" type="xs:string"/>
+          <xs:element minOccurs="0" name="sellTariff" type="xs:string"/>
+          <xs:element minOccurs="0" name="sellTaxPrice" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="state" type="tns:bookingLineState"/>
+          <xs:element minOccurs="0" name="third" type="tns:item"/>
+          <xs:element minOccurs="0" name="token" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="cancelQuote">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="amount" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="currency" type="tns:currency"/>
+          <xs:element name="daysInAdvanceRangeEnd" type="xs:int"/>
+          <xs:element name="daysInAdvenceRangeStart" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="currency">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="combinationRule">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="type" type="tns:combinationRuleType"/>
+          <xs:element minOccurs="0" name="value" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="itineraryWS">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arrival" type="xs:string"/>
+          <xs:element minOccurs="0" name="arrivalDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="arrivalTerminal" type="xs:string"/>
+          <xs:element minOccurs="0" name="departure" type="xs:string"/>
+          <xs:element minOccurs="0" name="departureDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="departureTerminal" type="xs:string"/>
+          <xs:element minOccurs="0" name="marketingCompany" type="xs:string"/>
+          <xs:element minOccurs="0" name="operatingCompany" type="xs:string"/>
+          <xs:element minOccurs="0" name="transportNumber" type="xs:string"/>
+          <xs:element minOccurs="0" name="type" type="tns:itineraryType"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="productWS">
+        <xs:complexContent>
+          <xs:extension base="tns:product">
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="contents" nillable="true" type="xs:string"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="simpleVarieties" nillable="true" type="tns:item"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="highlightedProductsSet" nillable="true" type="tns:productModalityVarietySetWS"/>
+              <xs:element name="highlightPriority" type="xs:int"/>
+              <xs:element minOccurs="0" name="highlightReferencePrice" type="xs:decimal"/>
+              <xs:element minOccurs="0" name="highlightPublicationDate" type="xs:dateTime"/>
+              <xs:element minOccurs="0" name="highlightExpirationDate" type="xs:dateTime"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="productZones" nillable="true" type="tns:zoneWS"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="product">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="type" type="tns:productType"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="remarks" nillable="true" type="tns:remark"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="characteristics" nillable="true" type="tns:amenity"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="addresses" nillable="true" type="tns:address"/>
+              <xs:element minOccurs="0" name="location" type="tns:address"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="contactPeople" nillable="true" type="tns:person"/>
+              <xs:element minOccurs="0" name="contact" type="tns:person"/>
+              <xs:element minOccurs="0" name="qualities" type="tns:quality"/>
+              <xs:element minOccurs="0" name="fillFinalClientsMode" type="tns:dataClientsMode"/>
+              <xs:element minOccurs="0" name="productCategorization" type="tns:categorization"/>
+              <xs:element minOccurs="0" name="url" type="xs:string"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="zones" nillable="true" type="tns:zone"/>
+              <xs:element name="printInfo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="key" type="xs:string"/>
+                          <xs:element minOccurs="0" name="value" type="xs:anyType"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" name="priority" type="xs:int"/>
+              <xs:element minOccurs="0" name="publicationDate" type="xs:dateTime"/>
+              <xs:element minOccurs="0" name="expirationDate" type="xs:dateTime"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="arrivalDepartureDates" nillable="true" type="tns:period"/>
+              <xs:element minOccurs="0" name="bannerPrice" type="xs:decimal"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="origins" nillable="true" type="xs:string"/>
+              <xs:element minOccurs="0" name="productChain" type="tns:productChain"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="productModalityVarietySetWS">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="product" type="tns:productWS"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="zoneWS">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="parentZones" nillable="true" type="tns:zoneWS"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="childrenZones" nillable="true" type="tns:zoneWS"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedProducts" nillable="true" type="tns:productWS"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedCities" nillable="true" type="tns:item"/>
+              <xs:element name="tags">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="key" type="xs:string"/>
+                          <xs:element minOccurs="0" name="value" type="xs:anyType"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="remark">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="remarkType" type="xs:string"/>
+          <xs:element minOccurs="0" name="remarkTypeDescription" type="xs:string"/>
+          <xs:element minOccurs="0" name="locale" type="xs:string"/>
+          <xs:element minOccurs="0" name="content" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="period" nillable="true" type="tns:period"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="period">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="endDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="endDay" type="xs:int"/>
+          <xs:element minOccurs="0" name="endHour" type="xs:int"/>
+          <xs:element minOccurs="0" name="endMinute" type="xs:int"/>
+          <xs:element minOccurs="0" name="endMonth" type="xs:int"/>
+          <xs:element minOccurs="0" name="endYear" type="xs:int"/>
+          <xs:element minOccurs="0" name="entity" type="xs:string"/>
+          <xs:element minOccurs="0" name="entityID" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+          <xs:element minOccurs="0" name="initDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="initDay" type="xs:int"/>
+          <xs:element minOccurs="0" name="initHour" type="xs:int"/>
+          <xs:element minOccurs="0" name="initMinute" type="xs:int"/>
+          <xs:element minOccurs="0" name="initMonth" type="xs:int"/>
+          <xs:element minOccurs="0" name="initYear" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="amenity">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="address">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+          <xs:element minOccurs="0" name="address" type="xs:string"/>
+          <xs:element minOccurs="0" name="postalCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="gps" type="xs:string"/>
+          <xs:element minOccurs="0" name="remarks" type="xs:string"/>
+          <xs:element minOccurs="0" name="country" type="tns:country"/>
+          <xs:element minOccurs="0" name="province" type="tns:province"/>
+          <xs:element minOccurs="0" name="city" type="tns:city"/>
+          <xs:element minOccurs="0" name="cityZone" type="tns:cityZone"/>
+          <xs:element minOccurs="0" name="useType" type="tns:item"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="country">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="province">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="city">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+              <xs:element minOccurs="0" name="provinceCode" type="xs:string"/>
+              <xs:element minOccurs="0" name="gpsLatitude" type="xs:string"/>
+              <xs:element minOccurs="0" name="gpsLongitude" type="xs:string"/>
+              <xs:element minOccurs="0" name="timeZoneOffset" type="xs:string"/>
+              <xs:element minOccurs="0" name="timeZone" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="cityZone">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="cityCode" type="xs:string"/>
+              <xs:element minOccurs="0" name="gpsLatitude" type="xs:string"/>
+              <xs:element minOccurs="0" name="gpsLongitude" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="person">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+          <xs:element minOccurs="0" name="type" type="tns:type"/>
+          <xs:element minOccurs="0" name="pid" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="surname" type="xs:string"/>
+          <xs:element minOccurs="0" name="locale" type="xs:string"/>
+          <xs:element minOccurs="0" name="phone" type="xs:string"/>
+          <xs:element minOccurs="0" name="phone2" type="xs:string"/>
+          <xs:element minOccurs="0" name="phone3" type="xs:string"/>
+          <xs:element minOccurs="0" name="fax" type="xs:string"/>
+          <xs:element minOccurs="0" name="mail" type="xs:string"/>
+          <xs:element minOccurs="0" name="web" type="xs:string"/>
+          <xs:element minOccurs="0" name="remarks" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="quality">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="categorization">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="typeID" type="xs:string"/>
+              <xs:element minOccurs="0" name="typeDescription" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="zone">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="parentZones" nillable="true" type="tns:zone"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="childrenZones" nillable="true" type="tns:zone"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedProducts" nillable="true" type="tns:product"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedCities" nillable="true" type="tns:item"/>
+              <xs:element name="isCombineZone" type="xs:boolean"/>
+              <xs:element name="tags">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="key" type="xs:string"/>
+                          <xs:element minOccurs="0" name="value" type="xs:anyType"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="activeChannels" nillable="true" type="tns:channel"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="productChain">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="chainCode" type="xs:string"/>
+              <xs:element minOccurs="0" name="chainDescription" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="pax">
+        <xs:complexContent>
+          <xs:extension base="tns:person">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="age" type="xs:int"/>
+              <xs:element minOccurs="0" name="address" type="tns:address"/>
+              <xs:element minOccurs="0" name="sex" type="xs:string"/>
+              <xs:element minOccurs="0" name="birthDate" type="xs:dateTime"/>
+              <xs:element minOccurs="0" name="birthPlace" type="xs:string"/>
+              <xs:element minOccurs="0" name="nationality" type="xs:string"/>
+              <xs:element minOccurs="0" name="passport" type="xs:string"/>
+              <xs:element minOccurs="0" name="issueDate" type="xs:dateTime"/>
+              <xs:element minOccurs="0" name="issuePlace" type="xs:string"/>
+              <xs:element minOccurs="0" name="expirationDate" type="xs:dateTime"/>
+              <xs:element minOccurs="0" name="profession" type="xs:string"/>
+              <xs:element minOccurs="0" name="ticketNumber" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="productUsageWS">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="paxDistribution" type="tns:paxDistribution"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="paxDistribution">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="varietyDistributions" nillable="true" type="tns:varietyPaxDistribution"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="varietyPaxDistribution">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="paxs" nillable="true" type="tns:pax"/>
+              <xs:element minOccurs="0" name="totalAdults" type="xs:int"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="childrenAges" nillable="true" type="xs:int"/>
+              <xs:element name="manualAdults" type="xs:int"/>
+              <xs:element name="manualKids" type="xs:int"/>
+              <xs:element name="manualBabies" type="xs:int"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType abstract="true" name="CompleteProductVariety">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="exclusivity" type="tns:exclusivityProductVarietiesTypes"/>
+              <xs:element minOccurs="0" name="order" type="xs:int"/>
+              <xs:element minOccurs="0" name="baseVariety" type="xs:string"/>
+              <xs:element minOccurs="0" name="characteristic" type="xs:string"/>
+              <xs:element minOccurs="0" name="quality" type="xs:string"/>
+              <xs:element minOccurs="0" name="scheduledTime" type="xs:string"/>
+              <xs:element name="UTCScheduledTime" type="xs:boolean"/>
+              <xs:element minOccurs="0" name="duration" type="xs:string"/>
+              <xs:element minOccurs="0" name="type" type="tns:varietyType"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="route">
+        <xs:complexContent>
+          <xs:extension base="tns:CompleteProductVariety">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="routeType" type="tns:routeType"/>
+              <xs:element minOccurs="0" name="transportNumber" type="xs:string"/>
+              <xs:element minOccurs="0" name="marketingCompany" type="xs:string"/>
+              <xs:element minOccurs="0" name="departure" type="xs:string"/>
+              <xs:element minOccurs="0" name="arrival" type="xs:string"/>
+              <xs:element minOccurs="0" name="sellClass" type="xs:string"/>
+              <xs:element minOccurs="0" name="sellClassLongName" type="xs:string"/>
+              <xs:element minOccurs="0" name="buyClass" type="xs:string"/>
+              <xs:element minOccurs="0" name="buyClassLongName" type="xs:string"/>
+              <xs:element minOccurs="0" name="arrivalTime" type="xs:string"/>
+              <xs:element minOccurs="0" name="departureTimezone" type="xs:string"/>
+              <xs:element minOccurs="0" name="arrivalTimezone" type="xs:string"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="itineraries" nillable="true" type="tns:itinerary"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="itinerary">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arrival" type="xs:string"/>
+          <xs:element minOccurs="0" name="arrivalDate" type="tns:localDateTime"/>
+          <xs:element name="arrivalDaysOffset" type="xs:int"/>
+          <xs:element minOccurs="0" name="arrivalTerminal" type="xs:string"/>
+          <xs:element minOccurs="0" name="arrivalTime" type="xs:string"/>
+          <xs:element minOccurs="0" name="arrivalTimezone" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="classes" nillable="true" type="tns:itineraryClass"/>
+          <xs:element minOccurs="0" name="code" type="xs:string"/>
+          <xs:element minOccurs="0" name="creationDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="departure" type="xs:string"/>
+          <xs:element minOccurs="0" name="departureDate" type="tns:localDateTime"/>
+          <xs:element minOccurs="0" name="departureTerminal" type="xs:string"/>
+          <xs:element minOccurs="0" name="departureTime" type="xs:string"/>
+          <xs:element minOccurs="0" name="departureTimezone" type="xs:string"/>
+          <xs:element minOccurs="0" name="duration" type="xs:string"/>
+          <xs:element minOccurs="0" name="exceptionDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="marketingCompany" type="xs:string"/>
+          <xs:element minOccurs="0" name="operatingCompany" type="xs:string"/>
+          <xs:element minOccurs="0" name="order" type="xs:int"/>
+          <xs:element minOccurs="0" name="transportNumber" type="xs:int"/>
+          <xs:element minOccurs="0" name="type" type="tns:itineraryType"/>
+          <xs:element name="UTCTime" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType final="extension restriction" name="localDateTime">
+        <xs:complexContent>
+          <xs:extension base="tns:baseLocal">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType abstract="true" name="baseLocal">
+        <xs:complexContent>
+          <xs:extension base="tns:abstractPartial">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType abstract="true" name="abstractPartial">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="itineraryClass">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="className" type="xs:string"/>
+          <xs:element name="seatsNumber" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="room">
+        <xs:complexContent>
+          <xs:extension base="tns:capacityRestrictedVariety">
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="amenities" nillable="true" type="tns:amenity"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType abstract="true" name="capacityRestrictedVariety">
+        <xs:complexContent>
+          <xs:extension base="tns:CompleteProductVariety">
+            <xs:sequence>
+              <xs:element name="maxPax" type="xs:int"/>
+              <xs:element name="minPax" type="xs:int"/>
+              <xs:element name="maxKids" type="xs:int"/>
+              <xs:element name="minKids" type="xs:int"/>
+              <xs:element name="maxAdults" type="xs:int"/>
+              <xs:element name="minAdults" type="xs:int"/>
+              <xs:element name="maxBabies" type="xs:int"/>
+              <xs:element name="minBabies" type="xs:int"/>
+              <xs:element name="kidTakeUp" type="xs:boolean"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="productVarietyCombinations" nillable="true" type="tns:productVarietyCombination"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="combinations" nillable="true" type="xs:string"/>
+              <xs:element name="babyTakeUp" type="xs:boolean"/>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="listException" nillable="true" type="tns:productVarietyException"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="productVarietyCombination">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="capacityRestrictedVarietyID" type="xs:string"/>
+              <xs:element name="adults" type="xs:int"/>
+              <xs:element name="kids" type="xs:int"/>
+              <xs:element name="babies" type="xs:int"/>
+              <xs:element minOccurs="0" name="entity" type="xs:string"/>
+              <xs:element minOccurs="0" name="entityId" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="productVarietyException">
+        <xs:sequence>
+          <xs:element name="numAdults" type="xs:int"/>
+          <xs:element name="numBabies" type="xs:int"/>
+          <xs:element name="numKids" type="xs:int"/>
+          <xs:element minOccurs="0" name="type" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="scheduledVariety">
+        <xs:complexContent>
+          <xs:extension base="tns:CompleteProductVariety">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="defaultVariety">
+        <xs:complexContent>
+          <xs:extension base="tns:CompleteProductVariety">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="physicalTransportVariety">
+        <xs:complexContent>
+          <xs:extension base="tns:capacityRestrictedVariety">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="totalSeat" type="xs:int"/>
+              <xs:element minOccurs="0" name="seatInlastRow" type="xs:int"/>
+              <xs:element name="columnSeat">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="key" type="xs:int"/>
+                          <xs:element minOccurs="0" name="value" type="xs:int"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element maxOccurs="unbounded" minOccurs="0" name="seatDistribution" nillable="true" type="tns:seat"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="seat">
+        <xs:complexContent>
+          <xs:extension base="tns:item">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="number" type="xs:int"/>
+              <xs:element minOccurs="0" name="position" type="tns:seatPosition"/>
+              <xs:element minOccurs="0" name="order" type="xs:int"/>
+              <xs:element minOccurs="0" name="state" type="tns:seatState"/>
+              <xs:element minOccurs="0" name="reference" type="xs:string"/>
+              <xs:element minOccurs="0" name="transportCode" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="invoiceDetailWS">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="totalBooking" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="totalCommissionable" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="totalNoCommissionable" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="totalCommission" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="totalCommissionTax" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="totalAgency" type="xs:decimal"/>
+          <xs:element minOccurs="0" name="currency" type="tns:currency"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="requiredPassengerInfo">
+        <xs:sequence/>
+        <xs:attribute name="data" type="tns:passengerField"/>
+        <xs:attribute name="type" type="tns:passengerFieldType"/>
+      </xs:complexType>
+      <xs:complexType name="wsPrice">
+        <xs:sequence/>
+        <xs:attribute name="amount" type="xs:decimal"/>
+        <xs:attribute name="currency" type="xs:string"/>
+      </xs:complexType>
+      <xs:complexType name="transportOptionPriceDetail">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="adultPrice" type="tns:TransportPrice"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="childrenPrice" nillable="true" type="tns:TransportPrice"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TransportPrice">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="price" type="tns:wsPrice"/>
+          <xs:element minOccurs="0" name="airportTaxes" type="tns:wsPrice"/>
+          <xs:element minOccurs="0" name="totalPrice" type="tns:wsPrice"/>
+        </xs:sequence>
+        <xs:attribute name="age" type="xs:int"/>
+      </xs:complexType>
+      <xs:complexType name="tagMap">
+        <xs:complexContent>
+          <xs:extension base="tns:hashtable">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="hashtable">
+        <xs:complexContent>
+          <xs:extension base="tns:dictionary">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType abstract="true" name="dictionary">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="getZoneTree">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="authenticationData" type="tns:authenticationData"/>
+          <xs:element minOccurs="0" name="zoneId" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getZoneTreeResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="destinationList" type="tns:destination"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getThirdTaxes">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="authenticationData" type="tns:authenticationData"/>
+          <xs:element minOccurs="0" name="companyCode" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getThirdTaxesResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="taxesResponse" type="tns:TaxesResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TaxesResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="companyTaxesDefinition" type="tns:CompanyTaxesDefinition"/>
+          <xs:element minOccurs="0" name="commissionTaxesApplication" type="tns:CommissionTaxesApplication"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CompanyTaxesDefinition">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="company" type="tns:Company"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Company">
+        <xs:sequence>
+          <xs:element name="companyCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="taxes" type="tns:Taxes"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Taxes">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="tax" type="tns:Tax"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Tax">
+        <xs:sequence>
+          <xs:element name="taxCode" type="xs:string"/>
+          <xs:element name="taxValues" type="tns:TaxValues"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TaxValues">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="taxValue" type="tns:TaxValue"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TaxValue">
+        <xs:sequence>
+          <xs:element name="startDate" type="xs:dateTime"/>
+          <xs:element name="endDate" type="xs:dateTime"/>
+          <xs:element name="value" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CommissionTaxesApplication">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="thirdTaxByCompany" type="tns:ThirdTaxByCompany"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ThirdTaxByCompany">
+        <xs:sequence>
+          <xs:element name="thirdCode" type="xs:string"/>
+          <xs:element name="companyCode" type="xs:string"/>
+          <xs:element name="commissionTaxCode" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="cashMovementType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="RECEIPT"/>
+          <xs:enumeration value="PAYMENT"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="destinationType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CONTINENT"/>
+          <xs:enumeration value="COUNTRY"/>
+          <xs:enumeration value="PROVINCE"/>
+          <xs:enumeration value="CITY"/>
+          <xs:enumeration value="COMMERCIAL_DESTINATION"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="bookingState">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="IN_AGREEMENT"/>
+          <xs:enumeration value="ON_REQUEST"/>
+          <xs:enumeration value="ANNULLED"/>
+          <xs:enumeration value="DENIED"/>
+          <xs:enumeration value="ERROR"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="combinationRuleType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="FREE_CHILD"/>
+          <xs:enumeration value="TRANSFER_ZONE"/>
+          <xs:enumeration value="HOTEL_COMBINATION"/>
+          <xs:enumeration value="FLIGHT_CONNECTION"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="itineraryType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="REGULAR"/>
+          <xs:enumeration value="EXCEPTION"/>
+          <xs:enumeration value="CONNECTION"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="productType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="LODGING"/>
+          <xs:enumeration value="SERVICE"/>
+          <xs:enumeration value="PACKAGE"/>
+          <xs:enumeration value="HIGHLIGHT"/>
+          <xs:enumeration value="FLIGHT"/>
+          <xs:enumeration value="OTHER"/>
+          <xs:enumeration value="TRANSPORT"/>
+          <xs:enumeration value="FERRY"/>
+          <xs:enumeration value="TRAIN"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="type">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="JURISTIC"/>
+          <xs:enumeration value="NATURAL"/>
+          <xs:enumeration value="VIRTUAL"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="dataClientsMode">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ALL"/>
+          <xs:enumeration value="ONE"/>
+          <xs:enumeration value="NONE"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="channel">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="DESKTOP"/>
+          <xs:enumeration value="INTERNET_SALE"/>
+          <xs:enumeration value="FINAL_CLIENT"/>
+          <xs:enumeration value="WEB_SERVICES"/>
+          <xs:enumeration value="EXTERNAL_CONNECTOR"/>
+          <xs:enumeration value="CROSS_SELLING"/>
+          <xs:enumeration value="TRAVELIO_BUY"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="exclusivityProductVarietiesTypes">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="NOT_EXCLUSIVE"/>
+          <xs:enumeration value="EXCLUSIVE"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="varietyType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="HOTEL_ROOM"/>
+          <xs:enumeration value="PHYSICAL_TRANSPORT"/>
+          <xs:enumeration value="TRANSPORT_TYPE"/>
+          <xs:enumeration value="ITINERARY"/>
+          <xs:enumeration value="ROUTE"/>
+          <xs:enumeration value="SCHEDULED"/>
+          <xs:enumeration value="DEFAULT_VARIETY"/>
+          <xs:enumeration value="TRAIN_CABIN"/>
+          <xs:enumeration value="FERRY_CABIN"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="packageComponentSelectionType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="MANDATORY"/>
+          <xs:enumeration value="OPTIONAL"/>
+          <xs:enumeration value="OPTIONAL_SIMPLE"/>
+          <xs:enumeration value="SINGLE_SELECTION"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="bookingLineState">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="IN_AGREEMENT"/>
+          <xs:enumeration value="ON_REQUEST"/>
+          <xs:enumeration value="ANNULLED"/>
+          <xs:enumeration value="DENIED"/>
+          <xs:enumeration value="ANNULLED_AUTOMATIC"/>
+          <xs:enumeration value="ERROR"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="routeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ONE_WAY"/>
+          <xs:enumeration value="ROUND_TRIP"/>
+          <xs:enumeration value="RETURN_TRIP"/>
+          <xs:enumeration value="JUMP"/>
+          <xs:enumeration value="ONE_WAY_CONNECTION"/>
+          <xs:enumeration value="RETURN_TRIP_CONNECTION"/>
+          <xs:enumeration value="ONE_WAY_OR_RETURN_TRIP"/>
+          <xs:enumeration value="ROUND_TRIP_CONNECTION"/>
+          <xs:enumeration value="ONE_WAY_OR_RETURN_TRIP_CONNECTION"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="seatPosition">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="WINDOW"/>
+          <xs:enumeration value="MIDDLE"/>
+          <xs:enumeration value="LANE"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="seatState">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="BOOKABLE"/>
+          <xs:enumeration value="BOOKED"/>
+          <xs:enumeration value="DELETED"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="paymentMode">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CREDIT"/>
+          <xs:enumeration value="PREPAY"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="passengerIdType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="DNI"/>
+          <xs:enumeration value="NIE"/>
+          <xs:enumeration value="PASSPORT"/>
+          <xs:enumeration value="CERT"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="passengerField">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ID"/>
+          <xs:enumeration value="ISSUE_COUNTRY"/>
+          <xs:enumeration value="ISSUE_DATE"/>
+          <xs:enumeration value="EXPIRATION_DATE"/>
+          <xs:enumeration value="NAME"/>
+          <xs:enumeration value="SURNAME"/>
+          <xs:enumeration value="SURNAME2"/>
+          <xs:enumeration value="GENDER"/>
+          <xs:enumeration value="BIRTH_PLACE"/>
+          <xs:enumeration value="BIRTH_DATE"/>
+          <xs:enumeration value="NATIONALITY"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="passengerFieldType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="MANDATORY"/>
+          <xs:enumeration value="OPTIONAL"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="WSException" nillable="true" type="tns:WSError"/>
+      <xs:element name="ServiceLocatorException" type="tns:ServiceLocatorException"/>
+      <xs:complexType name="ServiceLocatorException">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="parameters" type="xs:anyType"/>
+          <xs:element minOccurs="0" name="message" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getThirdCommissions">
+    <wsdl:part element="tns:getThirdCommissions" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAgencyReport">
+    <wsdl:part element="tns:getAgencyReport" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getThirdTaxesResponse">
+    <wsdl:part element="tns:getThirdTaxesResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getZoneTreeResponse">
+    <wsdl:part element="tns:getZoneTreeResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getThirdCommissionsResponse">
+    <wsdl:part element="tns:getThirdCommissionsResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBookingVoucherResponse">
+    <wsdl:part element="tns:getBookingVoucherResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createReceivableResponse">
+    <wsdl:part element="tns:createReceivableResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getThirdTaxes">
+    <wsdl:part element="tns:getThirdTaxes" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="WSExceptionMessage">
+    <wsdl:part element="tns:WSException" name="WSExceptionMessage"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLocationTree">
+    <wsdl:part element="tns:getLocationTree" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAgencyReportResponse">
+    <wsdl:part element="tns:getAgencyReportResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="reconfirmBookingResponse">
+    <wsdl:part element="tns:reconfirmBookingResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="reconfirmBooking">
+    <wsdl:part element="tns:reconfirmBooking" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validateAgencyReference">
+    <wsdl:part element="tns:validateAgencyReference" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getZoneTree">
+    <wsdl:part element="tns:getZoneTree" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createReceivable">
+    <wsdl:part element="tns:createReceivable" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validateAgencyReferenceResponse">
+    <wsdl:part element="tns:validateAgencyReferenceResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ServiceLocatorException">
+    <wsdl:part element="tns:ServiceLocatorException" name="ServiceLocatorException"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLocationTreeResponse">
+    <wsdl:part element="tns:getLocationTreeResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBookingVoucher">
+    <wsdl:part element="tns:getBookingVoucher" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="LeoUtilsWS">
+    <wsdl:operation name="getBookingVoucher">
+      <wsdl:input message="tns:getBookingVoucher" name="getBookingVoucher"></wsdl:input>
+      <wsdl:output message="tns:getBookingVoucherResponse" name="getBookingVoucherResponse"></wsdl:output>
+      <wsdl:fault message="tns:ServiceLocatorException" name="ServiceLocatorException"></wsdl:fault>
+      <wsdl:fault message="tns:WSExceptionMessage" name="WSExceptionMessage"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createReceivable">
+      <wsdl:input message="tns:createReceivable" name="createReceivable"></wsdl:input>
+      <wsdl:output message="tns:createReceivableResponse" name="createReceivableResponse"></wsdl:output>
+      <wsdl:fault message="tns:WSExceptionMessage" name="WSExceptionMessage"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getThirdCommissions">
+      <wsdl:input message="tns:getThirdCommissions" name="getThirdCommissions"></wsdl:input>
+      <wsdl:output message="tns:getThirdCommissionsResponse" name="getThirdCommissionsResponse"></wsdl:output>
+      <wsdl:fault message="tns:WSExceptionMessage" name="WSExceptionMessage"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAgencyReport">
+      <wsdl:input message="tns:getAgencyReport" name="getAgencyReport"></wsdl:input>
+      <wsdl:output message="tns:getAgencyReportResponse" name="getAgencyReportResponse"></wsdl:output>
+      <wsdl:fault message="tns:ServiceLocatorException" name="ServiceLocatorException"></wsdl:fault>
+      <wsdl:fault message="tns:WSExceptionMessage" name="WSExceptionMessage"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getLocationTree">
+      <wsdl:input message="tns:getLocationTree" name="getLocationTree"></wsdl:input>
+      <wsdl:output message="tns:getLocationTreeResponse" name="getLocationTreeResponse"></wsdl:output>
+      <wsdl:fault message="tns:WSExceptionMessage" name="WSExceptionMessage"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="validateAgencyReference">
+      <wsdl:input message="tns:validateAgencyReference" name="validateAgencyReference"></wsdl:input>
+      <wsdl:output message="tns:validateAgencyReferenceResponse" name="validateAgencyReferenceResponse"></wsdl:output>
+      <wsdl:fault message="tns:WSExceptionMessage" name="WSExceptionMessage"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="reconfirmBooking">
+      <wsdl:input message="tns:reconfirmBooking" name="reconfirmBooking"></wsdl:input>
+      <wsdl:output message="tns:reconfirmBookingResponse" name="reconfirmBookingResponse"></wsdl:output>
+      <wsdl:fault message="tns:WSExceptionMessage" name="WSExceptionMessage"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getZoneTree">
+      <wsdl:input message="tns:getZoneTree" name="getZoneTree"></wsdl:input>
+      <wsdl:output message="tns:getZoneTreeResponse" name="getZoneTreeResponse"></wsdl:output>
+      <wsdl:fault message="tns:WSExceptionMessage" name="WSExceptionMessage"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getThirdTaxes">
+      <wsdl:input message="tns:getThirdTaxes" name="getThirdTaxes"></wsdl:input>
+      <wsdl:output message="tns:getThirdTaxesResponse" name="getThirdTaxesResponse"></wsdl:output>
+      <wsdl:fault message="tns:WSExceptionMessage" name="WSExceptionMessage"></wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LeoUtilsWSSoapBinding" type="tns:LeoUtilsWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getBookingVoucher">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getBookingVoucher">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getBookingVoucherResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceLocatorException">
+        <soap:fault name="ServiceLocatorException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="WSExceptionMessage">
+        <soap:fault name="WSExceptionMessage" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createReceivable">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createReceivable">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createReceivableResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSExceptionMessage">
+        <soap:fault name="WSExceptionMessage" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getThirdCommissions">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getThirdCommissions">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getThirdCommissionsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSExceptionMessage">
+        <soap:fault name="WSExceptionMessage" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAgencyReport">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getAgencyReport">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAgencyReportResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceLocatorException">
+        <soap:fault name="ServiceLocatorException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="WSExceptionMessage">
+        <soap:fault name="WSExceptionMessage" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getLocationTree">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getLocationTree">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getLocationTreeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSExceptionMessage">
+        <soap:fault name="WSExceptionMessage" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="validateAgencyReference">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="validateAgencyReference">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="validateAgencyReferenceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSExceptionMessage">
+        <soap:fault name="WSExceptionMessage" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="reconfirmBooking">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="reconfirmBooking">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="reconfirmBookingResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSExceptionMessage">
+        <soap:fault name="WSExceptionMessage" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getZoneTree">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getZoneTree">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getZoneTreeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSExceptionMessage">
+        <soap:fault name="WSExceptionMessage" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getThirdTaxes">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getThirdTaxes">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getThirdTaxesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="WSExceptionMessage">
+        <soap:fault name="WSExceptionMessage" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LeoUtilsWS">
+    <wsdl:port binding="tns:LeoUtilsWSSoapBinding" name="LeoUtilsWSImplPort">
+      <soap:address location="http://localhost:8080/webservices/LeoUtilsWS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint></con:endpoints><con:operation id="0862d8b7-3de4-4dea-b67c-cf4e93c68fb4" isOneWay="false" action="" name="createReceivable" bindingOperationName="createReceivable" type="Request-Response" outputName="createReceivableResponse" inputName="createReceivable" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="0c2a58fc-939c-403b-8908-d1b81846d574" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.leo.barcelo.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:createReceivable>
+         <!--Optional:-->
+         <authenticationData>
+            <user>?</user>
+            <password>?</password>
+            <!--Optional:-->
+            <locale>?</locale>
+            <domain>?</domain>
+         </authenticationData>
+         <!--Optional:-->
+         <receivable>
+            <bookingReference>?</bookingReference>
+            <!--Optional:-->
+            <bookingLineId>?</bookingLineId>
+            <cashMovementType>?</cashMovementType>
+            <!--Optional:-->
+            <providerShortName>?</providerShortName>
+            <receivableConceptCode>?</receivableConceptCode>
+            <expirationDate>?</expirationDate>
+            <amount>?</amount>
+            <!--Optional:-->
+            <currency>?</currency>
+            <!--Optional:-->
+            <changeApplied>?</changeApplied>
+            <!--Optional:-->
+            <deadLine>?</deadLine>
+            <!--Optional:-->
+            <externalReference>?</externalReference>
+            <!--Optional:-->
+            <remark>?</remark>
+         </receivable>
+      </ws:createReceivable>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.leo.barcelo.com/LeoUtilsWS/createReceivable"/></con:call></con:operation><con:operation id="80955873-7818-40ac-9e27-f150e8d35b55" isOneWay="false" action="" name="getAgencyReport" bindingOperationName="getAgencyReport" type="Request-Response" outputName="getAgencyReportResponse" inputName="getAgencyReport" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="082220f1-0d92-4a40-83c4-0eb58897ac97" name="EJB_Security_Sample"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint><con:request><![CDATA[
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.leo.barcelo.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getAgencyReport>
+         <!--Optional:-->
+         <authenticationData>
+            <user>US_SOPORTELEO</user>
+            <password>LEO2014</password>
+            <locale>es_ES</locale>
+            <domain>barcelo</domain>
+            <channel>B2B</channel>
+            <subChannel>API</subChannel>
+         </authenticationData>
+         <bookingReference>1</bookingReference>
+      </ws:getAgencyReport>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.leo.barcelo.com/LeoUtilsWS/getAgencyReport"/><con:wsrmConfig version="1.2"/></con:call><con:call id="4bf019ba-4f8f-4aeb-8b91-c027e9ab0e10" name="Stelios_NME"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.leo.barcelo.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getAgencyReport>
+         <!--Optional:-->
+         <authenticationData>
+            <user>STELIOS</user>
+            <password>STELIOS123!</password>
+            <locale>es_ES</locale>
+            <domain>barcelo</domain>
+            <channel>B2B</channel>
+            <subChannel>API</subChannel>
+         </authenticationData>
+         <bookingReference>1</bookingReference>
+      </ws:getAgencyReport>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.leo.barcelo.com/LeoUtilsWS/getAgencyReport"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="05358d0b-17ce-46ee-83f4-139f8f982059" isOneWay="false" action="" name="getBookingVoucher" bindingOperationName="getBookingVoucher" type="Request-Response" outputName="getBookingVoucherResponse" inputName="getBookingVoucher" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="6f5a5529-b87f-475b-a830-c2d2a1e9cfcc" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.leo.barcelo.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getBookingVoucher>
+         <!--Optional:-->
+         <authenticationData>
+            <user>?</user>
+            <password>?</password>
+            <!--Optional:-->
+            <locale>?</locale>
+            <domain>?</domain>
+            <!--Optional:-->
+            <channel>?</channel>
+            <subChannel>?</subChannel>
+            <!--Optional:-->
+            <third>?</third>
+            <!--Optional:-->
+            <session>?</session>
+         </authenticationData>
+         <!--Optional:-->
+         <bookingReference>?</bookingReference>
+      </ws:getBookingVoucher>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.leo.barcelo.com/LeoUtilsWS/getBookingVoucher"/></con:call></con:operation><con:operation id="1197f162-d350-4a6b-846a-d7d810720c19" isOneWay="false" action="" name="getLocationTree" bindingOperationName="getLocationTree" type="Request-Response" outputName="getLocationTreeResponse" inputName="getLocationTree" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="527db324-499b-4a61-bc37-8a291b5039ee" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.leo.barcelo.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getLocationTree>
+         <!--Optional:-->
+         <authenticationData>
+            <user>?</user>
+            <password>?</password>
+            <!--Optional:-->
+            <locale>?</locale>
+            <domain>?</domain>
+         </authenticationData>
+      </ws:getLocationTree>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.leo.barcelo.com/LeoUtilsWS/getLocationTree"/></con:call></con:operation><con:operation id="84ce2fdc-a406-47fb-9c48-193e55d35d79" isOneWay="false" action="" name="getThirdCommissions" bindingOperationName="getThirdCommissions" type="Request-Response" outputName="getThirdCommissionsResponse" inputName="getThirdCommissions" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="90b40b36-2634-4a89-91cc-f950214a93b8" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.leo.barcelo.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getThirdCommissions>
+         <!--Optional:-->
+         <authenticationData>
+            <user>?</user>
+            <password>?</password>
+            <!--Optional:-->
+            <locale>?</locale>
+            <domain>?</domain>
+         </authenticationData>
+         <!--Optional:-->
+         <branchCode>?</branchCode>
+      </ws:getThirdCommissions>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.leo.barcelo.com/LeoUtilsWS/getThirdCommissions"/></con:call></con:operation><con:operation id="b8eb6115-8daa-4fbf-be90-8d63ca79aa3c" isOneWay="false" action="" name="getThirdTaxes" bindingOperationName="getThirdTaxes" type="Request-Response" outputName="getThirdTaxesResponse" inputName="getThirdTaxes" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="3c893399-8b1b-47b3-bc48-a85b06eda804" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.leo.barcelo.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getThirdTaxes>
+         <!--Optional:-->
+         <authenticationData>
+            <user>?</user>
+            <password>?</password>
+            <!--Optional:-->
+            <locale>?</locale>
+            <domain>?</domain>
+         </authenticationData>
+         <!--Optional:-->
+         <companyCode>?</companyCode>
+      </ws:getThirdTaxes>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.leo.barcelo.com/LeoUtilsWS/getThirdTaxes"/></con:call></con:operation><con:operation id="5d29d1ca-d2c7-428d-a6ee-34c9437c2fe3" isOneWay="false" action="" name="getZoneTree" bindingOperationName="getZoneTree" type="Request-Response" outputName="getZoneTreeResponse" inputName="getZoneTree" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="e51e9860-93f2-4d13-b972-9bd3724aac09" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.leo.barcelo.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getZoneTree>
+         <!--Optional:-->
+         <authenticationData>
+            <user>?</user>
+            <password>?</password>
+            <!--Optional:-->
+            <locale>?</locale>
+            <domain>?</domain>
+         </authenticationData>
+         <!--Optional:-->
+         <zoneId>?</zoneId>
+      </ws:getZoneTree>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.leo.barcelo.com/LeoUtilsWS/getZoneTree"/></con:call></con:operation><con:operation id="5ae466ca-0bcf-4dcb-8618-48832b8a9d2d" isOneWay="false" action="" name="reconfirmBooking" bindingOperationName="reconfirmBooking" type="Request-Response" outputName="reconfirmBookingResponse" inputName="reconfirmBooking" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="838aadee-2c86-4a4d-a2e4-6744cfeea834" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.leo.barcelo.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:reconfirmBooking>
+         <!--Optional:-->
+         <authenticationData>
+            <user>?</user>
+            <password>?</password>
+            <!--Optional:-->
+            <locale>?</locale>
+            <domain>?</domain>
+         </authenticationData>
+         <!--Optional:-->
+         <bookingReference>?</bookingReference>
+      </ws:reconfirmBooking>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.leo.barcelo.com/LeoUtilsWS/reconfirmBooking"/></con:call></con:operation><con:operation id="7100c5ca-3bc0-4850-9895-16699630adec" isOneWay="false" action="" name="validateAgencyReference" bindingOperationName="validateAgencyReference" type="Request-Response" outputName="validateAgencyReferenceResponse" inputName="validateAgencyReference" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="972573d0-ebb4-48f8-b470-4f4aef953029" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/webservices/LeoUtilsWS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.leo.barcelo.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:validateAgencyReference>
+         <!--Optional:-->
+         <authenticationData>
+            <user>?</user>
+            <password>?</password>
+            <!--Optional:-->
+            <locale>?</locale>
+            <domain>?</domain>
+            <!--Optional:-->
+            <channel>?</channel>
+            <subChannel>?</subChannel>
+            <!--Optional:-->
+            <third>?</third>
+            <!--Optional:-->
+            <session>?</session>
+         </authenticationData>
+         <!--Optional:-->
+         <agencyReference>?</agencyReference>
+      </ws:validateAgencyReference>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.leo.barcelo.com/LeoUtilsWS/validateAgencyReference"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" id="e385658d-abde-41b6-a95c-04c67c8ba8a8" wsaVersion="NONE" name="AgencyServiceATServiceSoapBinding" type="wsdl" bindingName="{http://www.jboss.org/jboss-jdf/jboss-as-quickstart/ejbsecurity/simple/Agency}AgencyServiceATServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/bookingsWSAPI/AgencyServiceAT?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/bookingsWSAPI/AgencyServiceAT?wsdl"><con:part><con:url>http://localhost:8080/bookingsWSAPI/AgencyServiceAT?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="AgencyServiceATService" targetNamespace="http://www.jboss.org/jboss-jdf/jboss-as-quickstart/ejbsecurity/simple/Agency" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.jboss.org/jboss-jdf/jboss-as-quickstart/ejbsecurity/simple/Agency" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.jboss.org/jboss-jdf/jboss-as-quickstart/ejbsecurity/simple/Agency" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="getBookingCount" type="tns:getBookingCount"/>
+      <xs:element name="getBookingCountResponse" type="tns:getBookingCountResponse"/>
+      <xs:element name="makeBooking" type="tns:makeBooking"/>
+      <xs:element name="makeBookingResponse" type="tns:makeBookingResponse"/>
+      <xs:element name="reset" type="tns:reset"/>
+      <xs:element name="resetResponse" type="tns:resetResponse"/>
+      <xs:complexType name="makeBooking">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+          <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+          <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="makeBookingResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="reset">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="resetResponse">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="getBookingCount">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="getBookingCountResponse">
+        <xs:sequence>
+          <xs:element name="return" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AgencyException" type="tns:AgencyException"/>
+      <xs:complexType name="AgencyException">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="message" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="makeBookingResponse">
+    <wsdl:part element="tns:makeBookingResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="reset">
+    <wsdl:part element="tns:reset" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resetResponse">
+    <wsdl:part element="tns:resetResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AgencyException">
+    <wsdl:part element="tns:AgencyException" name="AgencyException"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBookingCountResponse">
+    <wsdl:part element="tns:getBookingCountResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBookingCount">
+    <wsdl:part element="tns:getBookingCount" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="makeBooking">
+    <wsdl:part element="tns:makeBooking" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="AgencyAT">
+    <wsdl:operation name="makeBooking">
+      <wsdl:input message="tns:makeBooking" name="makeBooking"></wsdl:input>
+      <wsdl:output message="tns:makeBookingResponse" name="makeBookingResponse"></wsdl:output>
+      <wsdl:fault message="tns:AgencyException" name="AgencyException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="reset">
+      <wsdl:input message="tns:reset" name="reset"></wsdl:input>
+      <wsdl:output message="tns:resetResponse" name="resetResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getBookingCount">
+      <wsdl:input message="tns:getBookingCount" name="getBookingCount"></wsdl:input>
+      <wsdl:output message="tns:getBookingCountResponse" name="getBookingCountResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AgencyServiceATServiceSoapBinding" type="tns:AgencyAT">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="makeBooking">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="makeBooking">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="makeBookingResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="AgencyException">
+        <soap:fault name="AgencyException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="reset">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="reset">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="resetResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getBookingCount">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getBookingCount">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getBookingCountResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AgencyServiceATService">
+    <wsdl:port binding="tns:AgencyServiceATServiceSoapBinding" name="AgencyServiceAT">
+      <soap:address location="http://localhost:8080/bookingsWSAPI/AgencyServiceAT"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/bookingsWSAPI/AgencyServiceAT</con:endpoint><con:endpoint>http://localhost:8080/ws-security-reproducer/AgencyServiceAT</con:endpoint></con:endpoints><con:operation id="1927bc28-8bd7-422d-97ae-5b40d2b9cc61" isOneWay="false" action="" name="getBookingCount" bindingOperationName="getBookingCount" type="Request-Response" outputName="getBookingCountResponse" inputName="getBookingCount" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="90f375b9-4750-4fba-ab79-25b10aae6832" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/bookingsWSAPI/AgencyServiceAT</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:agen="http://www.jboss.org/jboss-jdf/jboss-as-quickstart/ejbsecurity/simple/Agency">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <agen:getBookingCount/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.jboss.org/jboss-jdf/jboss-as-quickstart/ejbsecurity/simple/Agency/AgencyAT/getBookingCount"/></con:call></con:operation><con:operation id="c6ca3349-28ea-4f93-8856-e07de105698a" isOneWay="false" action="" name="makeBooking" bindingOperationName="makeBooking" type="Request-Response" outputName="makeBookingResponse" inputName="makeBooking" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="a90f0647-f706-40aa-8179-1c15318b8049" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/bookingsWSAPI/AgencyServiceAT</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:agen="http://www.jboss.org/jboss-jdf/jboss-as-quickstart/ejbsecurity/simple/Agency">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <agen:makeBooking>
+         <!--Optional:-->
+         <arg0>STELIOS</arg0>
+         <!--Optional:-->
+         <arg1>STELIOS123!</arg1>
+         <!--Optional:-->
+         <arg2>MALLORCA</arg2>
+      </agen:makeBooking>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.jboss.org/jboss-jdf/jboss-as-quickstart/ejbsecurity/simple/Agency/AgencyAT/makeBooking"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="73be5f5b-2969-46c3-919e-7776aabbf71c" isOneWay="false" action="" name="reset" bindingOperationName="reset" type="Request-Response" outputName="resetResponse" inputName="reset" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="9671d06f-f448-4d11-b6a6-d0a2082f7e67" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/bookingsWSAPI/AgencyServiceAT</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:agen="http://www.jboss.org/jboss-jdf/jboss-as-quickstart/ejbsecurity/simple/Agency">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <agen:reset/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.jboss.org/jboss-jdf/jboss-as-quickstart/ejbsecurity/simple/Agency/AgencyAT/reset"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
