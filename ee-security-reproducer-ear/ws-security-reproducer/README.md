@@ -35,7 +35,7 @@ Add the security domains as follows (included standalone.xml)
                         </login-module>
                     </authentication>
                 </security-domain>
-                <security-domain name="travelio-ejb-security-domain" cache-type="default">
+                <security-domain name="custom-ejb-security-domain" cache-type="default">
                     <authentication>
                         <login-module code="Remoting" flag="optional">
                             <module-option name="password-stacking" value="useFirstPass"/>
