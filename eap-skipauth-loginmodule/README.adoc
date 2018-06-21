@@ -1,0 +1,511 @@
+= Example LoginModule which by-passes authentication simply adding one or more roles
+
+== Inspiration
+
+* https://github.com/jakubholynet/blog/tree/master/miniprojects/jboss-custom-login[Github jboss-custom-login]
+* https://access.redhat.com/documentation/en-us/jboss_enterprise_application_platform/6.3/html/security_guide/custom_loginmodule_example[Red Hat Docs on Custom Login Module Example]
+* https://access.redhat.com/solutions/129843[Red Hat Knowledgebase - How to add a custom login module in JBoss EAP 6/EAP 7]
+* https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html/login_module_reference/abstract_login_modules#abstractserver_login_module[Red Hat Docs - Abstract Login Modules]
+* https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html/login_module_reference/login_module_without_external_identity_story[Red Hat Docs - Identity Login Module]
+* https://docs.jboss.org/jbosssecurity/docs/6.0/security_guide/html/Login_Modules.html[JBoss Login Modules & Password Stacking]
+* https://access.redhat.com/documentation/en-us/jboss_enterprise_application_platform/6.2/html/security_guide/about_java_authentication_and_authorization_service_jaas[Red Hat Docs - About Java Authentication and Authorization Service (JAAS)]
+* https://access.redhat.com/documentation/en-us/jboss_enterprise_application_platform/6.2/html/security_guide/jaas_core_classes[Red Hat Docs - JAAS Core Classes]
+* https://github.com/cerker/jwt-example/blob/master/src/main/java/de/akquinet/jbosscc/jwt/auth/JwtLoginModule.java[Github - JwtLoginModule.java]
+* https://www.radcortez.com/custom-principal-and-loginmodule-for-wildfly/[Custom Principal and LoginModule for Wildfly]
+* https://dzone.com/articles/creating-custom-login-modules[Creating Custom Login Modules In JBoss AS 7 (and Earlier) ]
+
+
+== How To
+
+SITUATION
+-------------------------------------------------------------------------------------
+1. BPMS6 Uses either Basic Auth or Token to retrieve authenticate and retrieve roles/groups for the users accessing its REST API
+2. Current SSO setup doesn't provide this capabilities and instead a "userId" is provided (HTTP Header parameters or maybe username on Base Auth)
+3. The below is attempts to avoid real authentication but use the "userId" in retrieving roles for authorisation
+4. Delegate role retrieval to file or LDAP in the end.
+-------------------------------------------------------------------------------------
+
+=== STEP 1 - REMOVE AUTHORISATION FOR REST API
+
+A. For now removed completely the need for "kie-server" role when accessing the REST API but on a later stage may return it for access to "ADMIN" KIE SERVER Tasks
+
+[source,xml]
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         version="3.0"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+  <display-name>KieServer</display-name>
+  <servlet>
+    <servlet-name>org.kie.server.remote.rest.common.KieServerApplication</servlet-name>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>org.kie.server.remote.rest.common.KieServerApplication</servlet-name>
+    <url-pattern>/services/rest/*</url-pattern>
+  </servlet-mapping>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>REST web resources</web-resource-name>
+      <url-pattern>/services/rest/*</url-pattern>
+    </web-resource-collection>
+    <!--auth-constraint>
+      <role-name>kie-server</role-name>
+    </auth-constraint-->
+  </security-constraint>
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>KIE Server</realm-name>
+  </login-config>
+  <security-role>
+    <role-name>kie-server</role-name>
+  </security-role>
+
+</web-app>
+
+
+B. *** TODO *** RESTRICT the requirement for "kie-server" to KIE-SERVER management tasks
+
+
+=== STEP 2 - TRY KIE-SERVER REST API for different purposes with/without username/password for authentication providd
+
+*Note:* UNMANAGED (in order to make use of REST API)
+
+==== STEP 2.A - Create new KieContainer in KIESERVER (no KieController, no need for "kie-server" role see above STEP 1 "SOLUTION-A") 
+
+http://localhost:8080/kie-server/services/rest/server/containers/sjc
+
+[source,bash]
+curl -X PUT -u stelios:stelios123! "http://localhost:8080/kie-server/services/rest/server/containers/sjc" -H  "accept: application/xml" -H  "content-type: application/xml" -d "<?xml version=\"1.0\" encoding=\"UTF-8\"?><kie-container container-id=\"payments\"><release-id><group-id>com.qps</group-id><artifact-id>sjc-postal-svcs</artifact-id><version>${VERSION}</version></release-id></kie-container>
+[source,bash]
+curl -X PUT "http://localhost:8080/kie-server/services/rest/server/containers/sjc" -H  "accept: application/xml" -H  "content-type: application/xml" -d "<?xml version=\"1.0\" encoding=\"UTF-8\"?><kie-container container-id=\"payments\"><release-id><group-id>com.qps</group-id><artifact-id>sjc-postal-svcs</artifact-id><version>1.0.0</version></release-id></kie-container>"
+[source,bash]
+curl -X DELETE "http://localhost:8080/kie-server/services/rest/server/containers/sjc" -H  "accept: application/xml"
+XML
+<kie-container container-id="MyRESTContainer">
+  <release-id>
+    <artifact-id>Project1</artifact-id>
+    <group-id>com.redhat</group-id>
+    <version>1.0</version>
+  </release-id>
+</kie-container>
+JSON
+{
+  "kie-container": {
+    "container-id": "MyRESTContainer",
+    "release-id": {
+      "artifact-id": "Project1",
+      "group-id": "com.redhat",
+      "version": "1.0"
+    }
+  }
+}
+
+
+
+==== STEP 2.B - Create a New ProcessInstanceID for this process
+
+[source,bash]
+curl -X POST "http://localhost:8080/kie-server/services/rest/server/containers/sjc/processes/com.qps.pointToPointAllItemTypes/instances" -H  "accept: application/json" -H  "content-type: application/json" -D @"testCreateProcess.json"
+
+{ "pTrackID" : "Letter-001" }
+
+
+==== STEP 2.C - Find tasks 
+
+a) with AUTHENTICATION and correct role in single process
+
+[source,bash]
+curl -X GET -u 'bpmsAdmin:Password640!'  http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2 
+--------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<task-instance>
+    <task-id>2</task-id>
+    <task-priority>0</task-priority>
+    <task-name>Receive &amp; Log Item</task-name>
+    <task-subject></task-subject>
+    <task-description></task-description>
+    <task-form>ReceiveLogItem</task-form>
+    <task-status>Ready</task-status>
+    <task-actual-owner></task-actual-owner>
+    <task-created-by></task-created-by>
+    <task-created-on>2018-06-19T16:07:50.266+01:00</task-created-on>
+    <task-activation-time>2018-06-19T16:07:50.266+01:00</task-activation-time>
+    <task-skippable>true</task-skippable>
+    <task-workitem-id>2</task-workitem-id>
+    <task-process-instance-id>2</task-process-instance-id>
+    <task-parent-id>-1</task-parent-id>
+    <task-process-id>com.qps.pointToPointAllItemTypes</task-process-id>
+    <task-container-id>sjc</task-container-id>
+</task-instance>
+--------------------------------------------------------------------
+
+b) with Query for POTENTIAL TASKS (ie. could be owner or not ...set STATUS as well) -without authentication-
+[source,bash]
+curl -X GET  "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/pot-owners?groups=item-receiver&page=0&pageSize=200&sort=&sortOrder=true"
+Query Parameters
+* status
+	Parameter Name : status
+	Type Reference : string
+* groups
+	Parameter Name : groups
+	Type Reference : string
+* user
+	Parameter Name : user
+	Type Reference : string
+* page
+	Parameter Name : page
+	Type Reference : number
+* pageSize
+	Parameter Name : pageSize
+	Type Reference : number
+* sort
+	Parameter Name : sort
+	Type Reference : string
+* sortOrder
+	Parameter Name : sortOrder
+	Type Reference : boolean
+--------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<task-summary-list>
+    <task-summary>
+        <task-id>2</task-id>
+        <task-name>Receive &amp; Log Item</task-name>
+        <task-subject></task-subject>
+        <task-description></task-description>
+        <task-status>Ready</task-status>
+        <task-priority>0</task-priority>
+        <task-is-skipable>true</task-is-skipable>
+        <task-created-on>2018-06-19T16:07:50.266+01:00</task-created-on>
+        <task-activation-time>2018-06-19T16:07:50.266+01:00</task-activation-time>
+        <task-proc-inst-id>2</task-proc-inst-id>
+        <task-proc-def-id>com.qps.pointToPointAllItemTypes</task-proc-def-id>
+        <task-container-id>sjc</task-container-id>
+        <task-parent-id>-1</task-parent-id>
+    </task-summary>
+    <task-summary>
+        <task-id>1</task-id>
+        <task-name>Receive &amp; Log Item</task-name>
+        <task-subject></task-subject>
+        <task-description></task-description>
+        <task-status>Ready</task-status>
+        <task-priority>0</task-priority>
+        <task-is-skipable>true</task-is-skipable>
+        <task-created-on>2018-06-19T15:40:15.317+01:00</task-created-on>
+        <task-activation-time>2018-06-19T15:40:15.317+01:00</task-activation-time>
+        <task-proc-inst-id>1</task-proc-inst-id>
+        <task-proc-def-id>com.qps.pointToPointAllItemTypes</task-proc-def-id>
+        <task-container-id>com.qps:sjc-postal-svcs:1.0.0</task-container-id>
+        <task-parent-id>-1</task-parent-id>
+    </task-summary>
+</task-summary-list>
+--------------------------------------------------------------------
+
+c) with Query for OWNED (ie. s/he is the owner) -without authentication-
+[source,bash]
+Query Parameters
+* status
+	Parameter Name : status
+	Type Reference : string
+* user
+	Parameter Name : user
+	Type Reference : string
+* page
+	Parameter Name : page
+	Type Reference : number
+* pageSize
+	Parameter Name : pageSize
+	Type Reference : number
+* sort
+	Parameter Name : sort
+	Type Reference : string
+* sortOrder
+	Parameter Name : sortOrder
+	Type Reference : boolean
+curl -X GET  "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/owners?user=bpmsAdmin&page=0&pageSize=200&sort=&sortOrder=true" 
+
+==== STEP 2.D - Manipulate tasks 
+
+* MANAGING TASKS: https://access.redhat.com/documentation/en-us/red_hat_jboss_brms/6.2/html/user_guide/realtime_decision_server#user_tasks
+* TASK STATES: 	https://access.redhat.com/documentation/en-us/red_hat_jboss_bpm_suite/6.1/html/development_guide/task_lifecycle
+
+[source,bash]
+curl -X GET  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2"
+
+
+===== (a) CLAIM TASK (no authentication)
+
+curl -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/claimed?user=bpmsAdmin"     
+
+WORKS???? Strange how can I claim without having the role? or do I actuallyhave the role since the CLAIMIng user is bpmsAdmin in the QueryPath and not the one making the call to the REST API
+
+
+===== (b) Retrieve my tasks
+
+curl -X GET "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/owners"
+
+<EMPTY> .... I have provided no token or Base Auth so how will it find my tasks?
+
+curl -X GET "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/owners?user=bpmsAdmin"
+
+<EMPTY> .... I have provided no token or Base Auth so how will it find my tasks or even filter by user Id
+
+curl -u 'bpmsAdmin:Password640!' -X GET "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/owners?user=bpmsAdmin"
+
+--------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<task-summary-list>
+    <task-summary>
+        <task-id>2</task-id>
+        <task-name>Receive &amp; Log Item</task-name>
+        <task-subject></task-subject>
+        <task-description></task-description>
+        <task-status>Reserved</task-status>
+        <task-priority>0</task-priority>
+        <task-is-skipable>true</task-is-skipable>
+        <task-actual-owner>bpmsAdmin</task-actual-owner>
+        <task-created-on>2018-06-19T16:07:50.266+01:00</task-created-on>
+        <task-activation-time>2018-06-19T16:07:50.266+01:00</task-activation-time>
+        <task-proc-inst-id>2</task-proc-inst-id>
+        <task-proc-def-id>com.qps.pointToPointAllItemTypes</task-proc-def-id>
+        <task-container-id>sjc</task-container-id>
+        <task-parent-id>-1</task-parent-id>
+    </task-summary>
+</task-summary-list>
+--------------------------------------------------------------------
+
+curl -u 'stelios:stelios123!' -X GET "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/owners"
+or
+curl -u 'stelios:stelios123!' -X GET "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/owners=user?stelios"
+or
+curl -u 'stelios:stelios123!' -X GET "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/owners=user?bpmsAdmin"
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<task-summary-list/>
+
+As I have no tasks and cannot see someone else's tasks
+
+
+===== (c) START TASK 
+
+- (no authentication)
+curl -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/started"
+> Unexpected error during processing: User '[UserImpl:'unknown']' does not have permissions to execute operation 'Start' on task id 2
+
+curl -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/started?user=bpmsAdmin"
+> Unexpected error during processing: User '[UserImpl:'unknown']' does not have permissions to execute operation 'Start' on task id 2
+
+- (with wrong authentication)
+
+curl -u 'stelios:stelios123!' -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/started?user=bpmsAdmin"
+> Unexpected error during processing: User '[UserImpl:'stelios']' does not have permissions to execute operation 'Start' on task id 
+
+- (with correct authentication)
+
+curl -u 'bpmsAdmin:Password640!' -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/started"
+
+Query Parameters
+* user
+	Parameter Name : user
+	Type Reference : string
+
+===== (d) COMPLETE TASK (no authentication)
+
+
+- (no authentication)
+curl -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/completed"
+> Unexpected error during processing: User '[UserImpl:'unknown']' does not have permissions to execute operation 'Complete' on task id 2
+
+curl -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/completed?user=bpmsAdmin"
+> Unexpected error during processing: User '[UserImpl:'unknown']' does not have permissions to execute operation 'Complete' on task id
+
+- (with wrong authentication)
+
+curl -u 'stelios:stelios123!' -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/completed?user=bpmsAdmin"
+> Unexpected error during processing: User '[UserImpl:'stelios']' does not have permissions to execute operation 'Complete' on task id 2
+
+- (with correct authentication)
+
+curl -u 'bpmsAdmin:Password640!' -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/completed"
+
+Query Parameters
+* user
+	Parameter Name : user
+	Type Reference : string
+* auto-progress
+	Parameter Name : auto-progress
+	Type Reference : boolean
+
+
+
+=== STEP 3 - Create and deploy LoginModule which ignores real authentication taking Username as Passwird and again not really validating  (hardcoded Roles for now in Login MOdule to be stacked for authorizatoin later)
+
+
+==== 3.A - The login module source code & module
+
+* source code at: GITHUB/qatarpost-workspace/qps-eap-skipauth-loginmodule/
+* module at: GITHUB//qatarpost-workspace/qps-eap-skipauth-loginmodule/com/qatar/post/loginmodule/main
+
+==== 3.B - Add module in EAP
+
+mkdir -p /home/stkousso/Stelios/sw10/BPMS/Distros/6.4.0/jboss-eap-7.0-mysql/modules/com/qatar/post/loginmodule/main
+
+cp -R /home/stkousso/Stelios/Projects/0049-Wipro-Qatar-Post/qatarpost-workspace/qps-eap-skipauth-loginmodule/com/qatar/post/loginmodule/main/* /home/stkousso/Stelios/sw10/BPMS/Distros/6.4.0/jboss-eap-7.0-mysql/modules/com/qatar/post/loginmodule/main
+
+==== 3.C - Configure Security Domain
+[source,xml]
+/subsystem=security/security-domain=qps:add(cache-type=default)
+/subsystem=security/security-domain=qps/authentication=classic:add(login-modules=[{code=com.qps.SimpleUsernameOnlyLoginModule, module=com.qatar.post.loginmodule, flag=required}])
+                <security-domain name="qps" cache-type="default">
+                    <authentication>
+                        <login-module code="com.qps.SimpleUsernameOnlyLoginModule" flag="required" module="com.qatar.post.loginmodule"/>
+                    </authentication>
+                </security-domain>
+
+
+
+
+
+==== STEP 3 - Configure Application
+* jboss-web.xml
+[source,xml]
+<jboss-web>
+  <!--security-domain>other</security-domain-->
+  <security-domain>qps</security-domain>
+</jboss-web>
+
+
+==== STEP 4 - TEST With a ficticious user which doesn't get authenticated anywhere
+
+* GET ACTIVE PROCESS INSTANCES
+
+curl -X GET "http://localhost:8080/kie-server/services/rest/server/containers/sjc/processes/com.qps.pointToPointAllItemTypes/instances" -H "accept: application/json" -H  "content-type: application/json"
+
+* CREATE PROCESS
+
+curl -X POST "http://localhost:8080/kie-server/services/rest/server/containers/sjc/processes/com.qps.pointToPointAllItemTypes/instances" -H  "accept: application/json" -H  "content-type: application/json" -D @"testCreateProcess.json"
+
+** CHECK POTENTIAL OWNERS
+ curl -X GET  "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/pot-owners?groups=item-receiver&page=0&pageSize=200&sort=&sortOrder=true"
+
+** CHECK TASK
+
+curl -X GET  http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/3
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<task-instance>
+    <task-id>3</task-id>
+    <task-priority>0</task-priority>
+    <task-name>Receive &amp; Log Item</task-name>
+    <task-subject></task-subject>
+    <task-description></task-description>
+    <task-form>ReceiveLogItem</task-form>
+    <task-status>Ready</task-status>
+    <task-actual-owner></task-actual-owner>
+    <task-created-by></task-created-by>
+    <task-created-on>2018-06-19T18:38:17.881+01:00</task-created-on>
+    <task-activation-time>2018-06-19T18:38:17.881+01:00</task-activation-time>
+    <task-skippable>true</task-skippable>
+    <task-workitem-id>3</task-workitem-id>
+    <task-process-instance-id>3</task-process-instance-id>
+    <task-parent-id>-1</task-parent-id>
+    <task-process-id>com.qps.pointToPointAllItemTypes</task-process-id>
+    <task-container-id>sjc</task-container-id>
+</task-instance>
+
+* CLAIM TASK
+
+** BEFORE APPLYING new Login Module to KIESERVER
+curl -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/3/states/claimed?user=testUser"
+> Unexpected error during processing: User '[UserImpl:'unknown']' does not have permissions to execute operation 'Claim' on task id 3
+
+** AFTER APPLYING new Login Module to KIESERVER by channging jboss-web.xml and restarting APP
+curl -u 'ficticiousUser:ficticiousUser' -X PUT "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/3/states/claimed?user=testUser"
+> <html><head><title>Error</title></head><body>Unauthorized</body></html>
+
+curl -u 'ficticiousUser:ficticiousUser' -X PUT "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/3/states/claimed?user=bpmsAdmin"
+> <html><head><title>Error</title></head><body>Unauthorized</body></html>
+
+
+** CLAIM TASK (Seems to work notice the ficticiousUser is now the owner) AFTER APPLYING new Login Module to KIESERVER and restarting Server (*SUCCESS*)
+curl -u 'ficticiousUser:ficticiousUser' -X PUT "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/claimed?user=testUser"
+
+*** CHECK TASK CLAIMED (Seems to work notice the ficticiousUser is now the owner)
+curl -u 'ficticiousUser:ficticiousUser' -X GET  "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/pot-owners?groups=item-receiver&page=0&pageSize=200&sort=&sortOrder=true"
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<task-summary-list>
+    <task-summary>
+        <task-id>2</task-id>
+        <task-name>Receive &amp; Log Item</task-name>
+        <task-subject></task-subject>
+        <task-description></task-description>
+        <task-status>Reserved</task-status>
+        <task-priority>0</task-priority>
+        <task-is-skipable>true</task-is-skipable>
+        <task-actual-owner>ficticiousUser</task-actual-owner>
+        <task-created-on>2018-06-19T18:48:34.187+01:00</task-created-on>
+        <task-activation-time>2018-06-19T18:48:34.187+01:00</task-activation-time>
+        <task-proc-inst-id>2</task-proc-inst-id>
+        <task-proc-def-id>com.qps.pointToPointAllItemTypes</task-proc-def-id>
+        <task-container-id>sjc</task-container-id>
+        <task-parent-id>-1</task-parent-id>
+    </task-summary>
+
+** Retrieve my tasks
+*** Should Fail: curl -X GET "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/owners?user=testUser"
+*** Should Succeed: curl -u 'ficticiousUser:ficticiousUser' -X GET "http://localhost:8080/kie-server/services/rest/server/queries/tasks/instances/owners"
+
+*TODO* CHECK PROCESSES RUNNING
+
+* START TASK (with ficticiousUser)
+
+curl -u 'ficticiousUser:ficticiousUser' -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/started"
+
+
+** CHECK TASK STARTED (YES CORRECT)
+
+curl -X GET  http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<task-instance>
+    <task-id>2</task-id>
+    <task-priority>0</task-priority>
+    <task-name>Receive &amp; Log Item</task-name>
+    <task-subject></task-subject>
+    <task-description></task-description>
+    <task-form>ReceiveLogItem</task-form>
+    <task-status>InProgress</task-status>
+    <task-actual-owner>ficticiousUser</task-actual-owner>
+    <task-created-by></task-created-by>
+    <task-created-on>2018-06-19T18:48:34.187+01:00</task-created-on>
+    <task-activation-time>2018-06-19T18:48:34.187+01:00</task-activation-time>
+    <task-skippable>true</task-skippable>
+    <task-workitem-id>2</task-workitem-id>
+    <task-process-instance-id>2</task-process-instance-id>
+    <task-parent-id>-1</task-parent-id>
+    <task-process-id>com.qps.pointToPointAllItemTypes</task-process-id>
+    <task-container-id>sjc</task-container-id>
+</task-instance>
+
+
+* COMPLETE TASK  (with ficticiousUser)
+
+curl -u 'ficticiousUser:ficticiousUser' -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/completed"
+
+** CHECK TASK COMPLETED (Will not find TASK as it is not active any longer)
+curl -u 'ficticiousUser:ficticiousUser' -X PUT  "http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2/states/completed"
+
+** CHECK TASK BY ID (Will not find TASK as it is not active any longer)
+curl -X GET  http://localhost:8080/kie-server/services/rest/server/containers/sjc/tasks/2
+> Could not find task instance with id "2"
+
+*TODO* CHECK PROCESSES RUNNING
+
+
+
+
+
+
+
+
